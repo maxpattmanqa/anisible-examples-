@@ -1,0 +1,8 @@
+[test]
+35.230.140.57
+35.189.110.137
+
+[test:vars]
+ansible_user=maxpa_qzrio
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_ssh_private_key_file=~/.ssh/ansible_id_rsa

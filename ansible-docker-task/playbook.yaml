@@ -1,0 +1,43 @@
+# run on all hosts
+- hosts: all
+# run as the root user on the remote machine
+  become: true
+
+  tasks:
+    - name: 'Provisioning environment for docker'
+      apt:
+        pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+        state: latest
+        update_cache: yes
+    - name: 'adding Docker offical GPG key'
+      apt_key:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        state: present
+    - name: 'Set up docker repository'
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+        state: present 
+    - name: 'Installing Apt Update'
+      apt:
+        update_cache: yes
+    - name: 'Installing Docker Engine'
+      apt:
+        pkg:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io    
+    - name: 'Adding user to the docker group' 
+      user:
+        name: maxpa_qzrio
+        shell: /bin/bash
+        groups: docker
+        append: yes
+    - name : 'adding user to docker group'
+      ansible.builtin.group:
+          name: docker
+          state: present
